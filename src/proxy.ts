@@ -1,11 +1,11 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)']);
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
 
 /**
- * Every page except sign-in requires a Clerk session. Platform-staff authorisation
- * (platform role claim) is enforced by the API on every /v1/platform request; this
- * is a UX gate only. See docs/01-platform-admin-scope.md.
+ * Every page except sign-in and the invitation sign-up requires a Clerk session.
+ * Whether the person is platform staff is decided by the API on every /v1/platform
+ * request (backend ADR-0009); this is a UX gate only.
  */
 export default clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {
