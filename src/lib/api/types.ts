@@ -55,6 +55,12 @@ export interface OrganisationSettings {
   contactEmail: string | null;
   contactPhone: string | null;
   phoneCountryCode: string;
+  bankAccount?: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    branch: string;
+  } | null;
 }
 
 /** A registry entry (backend ADR-0010), with the tenant's settings from its own database. */
@@ -178,6 +184,7 @@ export interface Shift {
   orderCount: number;
   cashSalesMinor: number;
   cardSalesMinor: number;
+  transferSalesMinor: number;
   expectedCashMinor: number;
   countedCashMinor: number | null;
   varianceMinor: number | null;
@@ -195,7 +202,11 @@ export interface EventSales {
   };
   reversed: Partial<Record<'voided' | 'refunded', { orderCount: number; amountMinor: number }>>;
   pendingReversals: number;
-  byPayment: { method: 'cash' | 'card'; orderCount: number; revenueMinor: number }[];
+  byPayment: {
+    method: 'cash' | 'card' | 'bank_transfer';
+    orderCount: number;
+    revenueMinor: number;
+  }[];
   byCashier: (SalesFigures & { userId: string })[];
 }
 
@@ -237,7 +248,7 @@ export interface Order {
   currency: string;
   payment:
     | { method: 'cash'; tenderedMinor: number; changeMinor: number }
-    | { method: 'card'; reference: string | null };
+    | { method: 'card' | 'bank_transfer'; reference: string | null };
   customer: { name: string | null; phone: string | null; email: string | null } | null;
   status: OrderStatus;
   reversal: {

@@ -113,7 +113,7 @@ async function OrderPage({
             <p>
               {order.payment.method === 'cash'
                 ? `Cash: ${money(order.payment.tenderedMinor)} tendered, ${money(order.payment.changeMinor)} change`
-                : `Card${order.payment.reference ? `, reference ${order.payment.reference}` : ''}`}
+                : `${order.payment.method === 'card' ? 'Card' : 'Bank transfer'}${order.payment.reference ? `, reference ${order.payment.reference}` : ''}`}
             </p>
           </CardContent>
         </Card>
