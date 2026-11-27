@@ -20,10 +20,17 @@ import { tenantHref } from '@/lib/navigation';
 
 export const metadata = { title: 'Tenant orders' };
 
-const STATUSES = ['completed', 'voided', 'refunded', 'pending_reversal'] as const;
+const STATUSES = [
+  'completed',
+  'voided',
+  'refunded',
+  'pending_reversal',
+  'partially_refunded',
+] as const;
 const STATUS_FILTER_LABELS: Record<(typeof STATUSES)[number], string> = {
   ...ORDER_STATUS_LABELS,
   pending_reversal: 'Waiting for approval',
+  partially_refunded: 'Partly refunded',
 };
 
 export default function Page({
@@ -116,7 +123,7 @@ async function Orders({
                 {order.lines.reduce((sum, line) => sum + line.quantity, 0)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {formatMoney(order.totalMinor, order.currency)}
+                {formatMoney(order.totalMinor - (order.refundedMinor ?? 0), order.currency)}
               </TableCell>
               <TableCell>
                 <span className="flex flex-wrap gap-1">

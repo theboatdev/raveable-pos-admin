@@ -261,6 +261,18 @@ export interface Order {
     decidedAt: string | null;
   } | null;
   tickets: { code: string; ticketTypeId: string; status: 'valid' | 'void' }[];
+  /** Partial refunds (PARTIAL_REFUNDS.md); absent from orders read before they existed. */
+  refunds?: {
+    id: string;
+    ticketCodes: string[];
+    ticketCount: number;
+    amountMinor: number;
+    method: 'cash' | 'card' | 'bank_transfer';
+    reason: string;
+    refundedBy: string;
+    refundedAt: string;
+  }[];
+  refundedMinor?: number;
 }
 
 export interface Customer {

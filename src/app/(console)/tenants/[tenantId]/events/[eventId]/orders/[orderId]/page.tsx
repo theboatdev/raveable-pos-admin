@@ -108,6 +108,14 @@ async function OrderPage({
                     {money(order.totalMinor)}
                   </TableCell>
                 </TableRow>
+                {order.refundedMinor ? (
+                  <TableRow>
+                    <TableCell>Refunded (partial refunds)</TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      −{money(order.refundedMinor)}
+                    </TableCell>
+                  </TableRow>
+                ) : null}
               </TableBody>
             </Table>
             <p>
@@ -135,6 +143,22 @@ async function OrderPage({
               )}
             </CardContent>
           </Card>
+          {order.refunds?.length ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Partial refunds</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-2 text-sm">
+                {order.refunds.map((refund) => (
+                  <p key={refund.id}>
+                    {refund.ticketCount} {refund.ticketCount === 1 ? 'ticket' : 'tickets'},{' '}
+                    {money(refund.amountMinor)} by {refund.method.replace('_', ' ')} ·{' '}
+                    {name(refund.refundedBy)}, {formatDateTime(refund.refundedAt)}: {refund.reason}
+                  </p>
+                ))}
+              </CardContent>
+            </Card>
+          ) : null}
           {order.reversal ? (
             <Card>
               <CardHeader>
