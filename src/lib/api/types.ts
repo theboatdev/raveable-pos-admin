@@ -184,6 +184,8 @@ export interface Shift {
   orderCount: number;
   cashSalesMinor: number;
   cardSalesMinor: number;
+  /** Cash paid out of the drawer as expenses (EXPENSES.md), already off expected cash. */
+  cashExpensesMinor?: number;
   transferSalesMinor: number;
   expectedCashMinor: number;
   countedCashMinor: number | null;

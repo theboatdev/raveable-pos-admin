@@ -198,6 +198,11 @@ async function EventPage({ params }: { params: Promise<{ tenantId: string; event
                     <TableCell className="text-sm capitalize">{shift.status}</TableCell>
                     <TableCell className="text-right tabular-nums">
                       {money(shift.expectedCashMinor)}
+                      {shift.cashExpensesMinor ? (
+                        <span className="block text-xs text-muted-foreground">
+                          after {money(shift.cashExpensesMinor)} paid out
+                        </span>
+                      ) : null}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {shift.varianceMinor === null ? '—' : money(shift.varianceMinor)}
